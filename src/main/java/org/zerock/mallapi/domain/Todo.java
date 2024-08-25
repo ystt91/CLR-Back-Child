@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Table(name="tbl_todo")
 public class Todo {
     
@@ -48,4 +47,5 @@ public class Todo {
     public void changeDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
+
 }

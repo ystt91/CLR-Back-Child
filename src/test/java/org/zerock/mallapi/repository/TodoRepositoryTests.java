@@ -6,10 +6,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.zerock.mallapi.domain.Todo;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 
@@ -33,15 +36,20 @@ public class TodoRepositoryTests {
     @Test
     public void testInsert(){
 
-        Todo todo = Todo.builder()
-                .title("Title")
-                .content("Content")
-                .dueDate(LocalDate.of(2023,12,10))
-                .build();
+        for (int i = 0; i < 100; i++) {
 
-        Todo result = todoRepository.save(todo); //리턴 타입은 entity
+            Todo todo = Todo.builder()
+                    .title("Title..." + i)
+                    .content("Content..." + i)
+                    .dueDate(LocalDate.of(2023,12,10))
+                    .build();
 
-        log.info(result);
+            Todo result = todoRepository.save(todo); //리턴 타입은 entity
+
+            log.info(result);
+
+        }
+
     }
 
     @Test
@@ -73,5 +81,27 @@ public class TodoRepositoryTests {
 
 
     }
+
+    @Test
+    public void testPaging(){
+
+        //페이지 번호는 0부터
+        Pageable pageable = PageRequest.of(0,10, Sort.by("tno").descending());
+
+        Page<Todo> result = todoRepository.findAll(pageable);
+
+        log.info(result.getTotalElements());
+
+        log.info(result.getContent());
+
+    }
+/*
+    @Test
+    public void testSearch1(){
+
+        todoRepository.search1();
+
+    }*/
+
 
 }
