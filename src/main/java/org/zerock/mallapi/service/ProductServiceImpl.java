@@ -62,9 +62,7 @@ public class ProductServiceImpl implements ProductService {
         }).collect(Collectors.toList());
 
 
-
         long totalCount = result.getTotalElements();
-
 
 
         return PageResponseDTO.<ProductDTO>withAll()
@@ -79,10 +77,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Long register(ProductDTO productDTO) {
 
+        log.info("시발2 " + productDTO.toString());
+
         Product product = dtoToEntity(productDTO);
 
         log.info("----------------------------------");
-        log.info(product);
+        log.info("시발" + product);
         log.info(product.getImageList());
 
         Long pno = productRepository.save(product).getPno();
@@ -94,6 +94,8 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO get(Long pno) {
 
         Optional<Product> result = productRepository.findById(pno);
+
+        log.info(result.toString());
 
         Product product = result.orElseThrow();
 
@@ -144,6 +146,8 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductDTO entityToDTO(Product product) {
 
+        log.info("productDTO-----------------------" + product.toString());
+
         ProductDTO productDTO = ProductDTO.builder()
                 .pno(product.getPno())
                 .pname(product.getPname())
@@ -163,6 +167,8 @@ public class ProductServiceImpl implements ProductService {
                         productImage.getFileName()).collect(Collectors.toList());
 
         productDTO.setUploadedFileNames(fileNameList);
+
+        log.info("productDTO-----------------------" + productDTO.toString());
 
         return productDTO;
     }

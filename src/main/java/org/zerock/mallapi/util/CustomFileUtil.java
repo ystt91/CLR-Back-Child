@@ -51,7 +51,7 @@ public class CustomFileUtil {
     public List<String> saveFiles(List<MultipartFile> files) throws RuntimeException {
 
         if(files == null || files.size() == 0){
-            return null;
+            return List.of();
         }
 
         List<String> uploadNames = new ArrayList<>();
@@ -69,7 +69,7 @@ public class CustomFileUtil {
                 String contentType = file.getContentType(); // Mime type
 
                 //이미지 파일이라면~
-                if(contentType != null || contentType.startsWith("image")){
+                if(contentType != null && contentType.startsWith("image")){
 
                     Path thumbnailPath = Paths.get(uploadPath, "s_" + savedName);
 

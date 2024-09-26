@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.mallapi.dto.PageRequestDTO;
@@ -26,7 +27,6 @@ public class ProductController {
     private final ProductService productService;
 
 
-
     @GetMapping("/view/{fileName}")
     public ResponseEntity<Resource> viewFileGET(@PathVariable("fileName") String fileName){
 
@@ -34,6 +34,7 @@ public class ProductController {
 
     }
 
+    @PreAuthorize(("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"))
     @GetMapping("/list")
     public PageResponseDTO<ProductDTO> productList(PageRequestDTO pageRequestDTO){
 
@@ -44,6 +45,7 @@ public class ProductController {
     @PostMapping("/")
     public Map<String, Long> register(ProductDTO productDTO){
 
+        log.info("컨트롤러" + productDTO);
         //이 과정에서 파일을 업로드를 먼저 시켜야 합니다.
 
         //멀티 파트로 파일을 리스트로 얻어오고
